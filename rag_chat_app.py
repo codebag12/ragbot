@@ -18,10 +18,6 @@ LANGCHAIN_ENDPOINT = os.getenv('LANGCHAIN_ENDPOINT')
 LANGCHAIN_API_KEY = os.getenv('LANGCHAIN_API_KEY')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-# Check if required environment variables are set
-if not all([LANGCHAIN_API_KEY, OPENAI_API_KEY]):
-    raise ValueError("Missing required environment variables. Please set LANGCHAIN_API_KEY and OPENAI_API_KEY.")
-
 # Create the Streamlit app interface
 st.title("RAG with Streamlit")
 
