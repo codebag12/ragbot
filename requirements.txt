@@ -3,7 +3,7 @@
    langchain-openai
    langchain-community
    bs4
-   chromadb
+   chromadb==0.4.15  # or the latest version
    openai
    pypdf
    docx2txt
