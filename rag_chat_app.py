@@ -12,11 +12,15 @@ import os
 import bs4
 import tempfile
 
-# Set environment variables for LangChain and OpenAI
-os.environ['LANGCHAIN_TRACING_V2'] = 'true'
-os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
-os.environ['LANGCHAIN_API_KEY'] = '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'
-os.environ['OPENAI_API_KEY'] = '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'
+# Use environment variables without setting them in the code
+LANGCHAIN_TRACING_V2 = os.getenv('LANGCHAIN_TRACING_V2')
+LANGCHAIN_ENDPOINT = os.getenv('LANGCHAIN_ENDPOINT')
+LANGCHAIN_API_KEY = os.getenv('LANGCHAIN_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+# Optionally, you can add checks to ensure the environment variables are set
+if not all([LANGCHAIN_API_KEY, OPENAI_API_KEY]):
+    raise ValueError("Missing required environment variables. Please set LANGCHAIN_API_KEY and OPENAI_API_KEY.")
 
 # Streamlit app: Create the user interface
 st.title("RAG with Streamlit")
