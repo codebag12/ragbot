@@ -78,8 +78,11 @@ if uploaded_file is not None or url_input:
         st.stop()
 
     # Embed
-    vectorstore = Chroma.from_documents(documents=splits, 
-                                        embedding=OpenAIEmbeddings())
+    vectorstore = Chroma.from_documents(
+        documents=splits, 
+        embedding=OpenAIEmbeddings(),
+        persist_directory=None  # This makes Chroma run in-memory
+    )
 
     retriever = vectorstore.as_retriever()
 
