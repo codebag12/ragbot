@@ -31,8 +31,30 @@ url_input = st.text_input("Or enter a URL:")
 if uploaded_file is not None or url_input:
     # Load documents based on input type (file or URL)
     if uploaded_file is not None:
-        # Handle uploaded file (code for different file types is omitted for brevity)
-        pass
+  
+   # Handle uploaded file
+        file_extension = uploaded_file.name.split('.')[-1].lower()
+        if file_extension == 'txt':
+            loader = TextLoader(uploaded_file.getvalue().decode())
+        elif file_extension == 'pdf':
+            from langchain_community.document_loaders import PyPDFLoader
+            import tempfile
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+                temp_file.write(uploaded_file.getvalue())
+                temp_file_path = temp_file.name
+            loader = PyPDFLoader(temp_file_path)
+        elif file_extension == 'docx':
+            from langchain_community.document_loaders import Docx2txtLoader
+            import tempfile
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.docx') as temp_file:
+                temp_file.write(uploaded_file.getvalue())
+                temp_file_path = temp_file.name
+            loader = Docx2txtLoader(temp_file_path)
+        else:
+            st.error(f"Unsupported file type: {file_extension}")
+            st.stop()
+
+       
     else:
         # Handle URL input
         loader = WebBaseLoader(
