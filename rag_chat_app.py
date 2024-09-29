@@ -31,25 +31,43 @@ url_input = st.text_input("Or enter a URL:")
 if uploaded_file is not None or url_input:
     # Load documents based on input type (file or URL)
     if uploaded_file is not None:
-  
-   # Handle uploaded file
+        # Get the file extension from the uploaded file's name and convert it to lowercase
         file_extension = uploaded_file.name.split('.')[-1].lower()
+        # Check if the file is a text file
         if file_extension == 'txt':
+            # Create a TextLoader for text files, decoding the file content
             loader = TextLoader(uploaded_file.getvalue().decode())
+
+        # Check if the file is a PDF
         elif file_extension == 'pdf':
+            # Import PyPDFLoader for handling PDF files
             from langchain_community.document_loaders import PyPDFLoader
+            # Import tempfile module for creating temporary files
             import tempfile
+            # Create a temporary file to store the PDF content
             with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+                # Write the uploaded file content to the temporary file
                 temp_file.write(uploaded_file.getvalue())
+                # Get the path of the temporary file
                 temp_file_path = temp_file.name
+            # Create a PyPDFLoader with the temporary file path
             loader = PyPDFLoader(temp_file_path)
+
+        # Check if the file is a Word document
         elif file_extension == 'docx':
+            # Import Docx2txtLoader for handling Word documents
             from langchain_community.document_loaders import Docx2txtLoader
+            # Import tempfile module for creating temporary files
             import tempfile
+            # Create a temporary file to store the Word document content
             with tempfile.NamedTemporaryFile(delete=False, suffix='.docx') as temp_file:
+                # Write the uploaded file content to the temporary file
                 temp_file.write(uploaded_file.getvalue())
+                # Get the path of the temporary file
                 temp_file_path = temp_file.name
+            # Create a Docx2txtLoader with the temporary file path
             loader = Docx2txtLoader(temp_file_path)
+            
         else:
             st.error(f"Unsupported file type: {file_extension}")
             st.stop()
